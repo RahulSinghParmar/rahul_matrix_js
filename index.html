@@ -1,9 +1,158 @@
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <title>Rahul Matrix</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="An interactive digital rain playground. Explore Canvas animation, tune the signal and export your frame. A vanilla JavaScript project by Rahul Singh Parmar."
+    />
+    <meta name="theme-color" content="#0c110f" />
+    <title>Signal / Matrix Rain Studio</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="matrix.js"></script>
   </head>
-  <body style="margin: 0">
-    <canvas width="1000" height="1500" id="canvas"> </canvas>
-    <script src="matrix.js"></script>
+  <body>
+    <a href="#main" class="skip">Skip to studio</a>
+    <div class="shell">
+      <header>
+        <a class="brand" href="./"
+          ><span class="brand-icon" aria-hidden="true">▥</span> SIGNAL<span class="brand-slash"
+            >/</span
+          ></a
+        ><span class="header-label">A GENERATIVE CANVAS EXPERIMENT</span
+        ><a class="source-link" href="https://github.com/RahulSinghParmar/rahul_matrix_js"
+          >VIEW SOURCE ↗</a
+        >
+      </header>
+      <main id="main">
+        <section class="intro" aria-labelledby="title">
+          <div>
+            <p class="eyebrow"><span class="dot"></span> EXPERIMENT 001 · CANVAS 2D</p>
+            <h1 id="title">Find your <em>frequency.</em></h1>
+            <p class="subtitle">A little code. An endless downpour. Make the signal your own.</p>
+          </div>
+          <div class="intro-note">
+            REAL-TIME RENDERING<br />NO FRAMEWORKS. JUST JAVASCRIPT.<span
+              >EST. 2022 / REIMAGINED 2026</span
+            >
+          </div>
+        </section>
+        <div class="studio">
+          <section class="preview" aria-label="Digital rain preview">
+            <div class="preview-bar">
+              <span
+                ><span class="dot" id="live-dot"></span>
+                <span id="render-status">RENDERING</span></span
+              ><span id="dimensions">CANVAS READY</span>
+            </div>
+            <div class="canvas-wrap" id="canvas-wrap">
+              <canvas
+                id="canvas"
+                role="img"
+                aria-label="Decorative digital rain. Use the controls to change its appearance."
+                >Your browser does not support Canvas. The controls require a Canvas-capable
+                browser.</canvas
+              >
+              <div class="canvas-caption" aria-hidden="true">
+                <span>THE SIGNAL IS EVERYWHERE.</span><span>01 — ∞</span>
+              </div>
+            </div>
+            <div class="preview-footer">
+              <span id="preset-caption">01 / CLASSIC GREEN</span
+              ><button id="fullscreen" type="button">⛶ Fullscreen preview</button>
+            </div>
+          </section>
+          <aside class="panel" aria-labelledby="controls-title">
+            <div class="panel-heading">
+              <span class="eyebrow">CONTROL ROOM</span><span class="panel-index">[ 01 ]</span>
+            </div>
+            <h2 id="controls-title">Shape the signal<span>.</span></h2>
+            <fieldset class="presets">
+              <legend>COLOR FREQUENCY</legend>
+              <div class="preset-options">
+                <button type="button" data-preset="green" aria-pressed="true">
+                  <span class="swatch green"></span>Classic</button
+                ><button type="button" data-preset="amber" aria-pressed="false">
+                  <span class="swatch amber"></span>Amber</button
+                ><button type="button" data-preset="ice" aria-pressed="false">
+                  <span class="swatch ice"></span>Ice
+                </button>
+              </div>
+            </fieldset>
+            <label class="range-label" for="speed"
+              >Fall speed <output id="speed-value" for="speed">60</output></label
+            ><input id="speed" type="range" min="20" max="140" value="60" />
+            <div class="range-ends"><span>DRIFT</span><span>DOWNPOUR</span></div>
+            <label class="range-label" for="density"
+              >Density <output id="density-value" for="density">65%</output></label
+            ><input id="density" type="range" min="15" max="100" value="65" />
+            <div class="range-ends"><span>SPARSE</span><span>SATURATED</span></div>
+            <div class="select-grid">
+              <label for="size"
+                >GLYPH SIZE<select id="size">
+                  <option value="14">Small / 14px</option>
+                  <option value="18" selected>Medium / 18px</option>
+                  <option value="24">Large / 24px</option>
+                </select></label
+              ><label for="characters"
+                >CHARACTER SET<select id="characters">
+                  <option value="mixed">Mixed</option>
+                  <option value="binary">Binary</option>
+                  <option value="latin">Latin</option>
+                  <option value="kana">Katakana</option>
+                </select></label
+              >
+            </div>
+            <label class="range-label" for="trail"
+              >Trail persistence <output id="trail-value" for="trail">70%</output></label
+            ><input id="trail" type="range" min="10" max="95" value="70" />
+            <div class="range-ends"><span>FLEETING</span><span>LINGERING</span></div>
+            <div class="actions">
+              <button class="primary" type="button" id="pause">Pause animation</button
+              ><button type="button" id="download">↓ Save PNG</button>
+            </div>
+            <button type="button" class="reset" id="reset">↺ Restore defaults</button>
+            <p class="panel-note" id="motion-note">
+              Settings stay on this device. Your canvas stays yours.
+            </p>
+          </aside>
+        </div>
+        <p role="status" class="notice" id="notice"></p>
+        <section class="under-the-hood" aria-labelledby="about-title">
+          <div>
+            <p class="eyebrow">UNDER THE HOOD</p>
+            <h2 id="about-title">Small code.<br />Infinite atmosphere.</h2>
+          </div>
+          <p>
+            Every glyph follows its own path. Time-based motion keeps the rain consistent across
+            refresh rates, while a pixel-aware canvas keeps the signal crisp.
+          </p>
+          <dl>
+            <div>
+              <dt>ENGINE</dt>
+              <dd>Canvas 2D</dd>
+            </div>
+            <div>
+              <dt>STACK</dt>
+              <dd>Vanilla JS</dd>
+            </div>
+            <div>
+              <dt>FOOTPRINT</dt>
+              <dd>No runtime dependencies</dd>
+            </div>
+          </dl>
+        </section>
+      </main>
+      <footer>
+        <span
+          >CREATED BY <a href="https://github.com/RahulSinghParmar">RAHUL SINGH PARMAR ↗</a></span
+        ><span
+          >INSPIRED BY DIGITAL RAIN ·
+          <a href="https://github.com/tarantino07/ytb_matrix_js">ORIGINAL EXPERIMENT ↗</a></span
+        >
+      </footer>
+    </div>
   </body>
 </html>
