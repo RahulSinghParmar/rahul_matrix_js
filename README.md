@@ -46,7 +46,7 @@ Unit tests verify settings validation, character selection and frame-rate-indepe
 
 ## How it works
 
-`settings.js` contains validated settings, palettes, glyph selection and the pure motion calculation. `matrix.js` owns the canvas lifecycle and interaction. Each particle gets a position and stable velocity; elapsed seconds determine movement. Trail fading is adjusted by elapsed time. Resizing reseeds the distribution and resets the canvas transform. The PNG is generated locally with Canvas.toBlob.
+`settings.js` contains validated settings, palettes, glyph selection and the pure motion calculation. `matrix.js` owns the canvas lifecycle and interaction. Each particle gets a position and stable velocity; elapsed seconds determine movement. Glyphs are stamped on a row grid to keep their trails crisp. Trail fading is adjusted by elapsed time. Resizing reseeds the distribution and resets the canvas transform. The PNG is generated locally with Canvas.toBlob.
 
 Fullscreen depends on browser/device support; a status message explains when unavailable. Output is generative, so screenshots vary. The canvas is decorative with an accessible description; controls are real HTML elements.
 
