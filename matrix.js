@@ -34,16 +34,19 @@ function clear() {
 function seed() {
   const columns = Math.ceil(width / settings.size);
   particles = [];
+  const particle = (x) => ({
+    x,
+    y: Math.random() * height,
+    velocity: 0.5 + Math.random(),
+    glyph: randomGlyph(glyphs[settings.characters]),
+    row: null,
+  });
   for (let i = 0; i < columns; i++) {
-    if (Math.random() * 100 <= settings.density)
-      particles.push({
-        x: i * settings.size,
-        y: Math.random() * height,
-        velocity: 0.5 + Math.random(),
-        glyph: randomGlyph(glyphs[settings.characters]),
-        timer: 0,
-      });
+    if (Math.random() * 100 <= settings.density) particles.push(particle(i * settings.size));
   }
+  // Even a sparse selection on a narrow screen should contain a visible stream.
+  if (!particles.length && columns > 0)
+    particles.push(particle(Math.floor(columns / 2) * settings.size));
 }
 function draw(delta, still = false) {
   if (!ctx) return;
@@ -52,26 +55,26 @@ function draw(delta, still = false) {
   ctx.font = `${settings.size}px monospace`;
   ctx.textBaseline = 'top';
   for (const p of particles) {
+    if (!still) {
+      p.y = advance(p.y, settings.speed * 1.8 * p.velocity, delta);
+      if (p.y > height + settings.size) p.y = -settings.size;
+    }
+    // Keep motion time-based, but stamp glyphs on rows so trails do not smear.
+    const row = Math.floor(p.y / settings.size) * settings.size;
+    if (row !== p.row) {
+      p.glyph = randomGlyph(glyphs[settings.characters]);
+      p.row = row;
+    }
     if (still) {
       for (let j = 12; j >= 1; j--) {
         ctx.globalAlpha = (1 - j / 13) * 0.65;
         ctx.fillStyle = palettes[settings.preset];
-        ctx.fillText(randomGlyph(glyphs[settings.characters]), p.x, p.y - j * settings.size);
+        ctx.fillText(randomGlyph(glyphs[settings.characters]), p.x, row - j * settings.size);
       }
       ctx.globalAlpha = 1;
-    } else {
-      p.y = advance(p.y, settings.speed * 1.8 * p.velocity, delta);
-      p.timer += delta;
-      if (p.timer > 0.09) {
-        p.glyph = randomGlyph(glyphs[settings.characters]);
-        p.timer = 0;
-      }
-      if (p.y > height + settings.size) {
-        p.y = -settings.size;
-      }
     }
     ctx.fillStyle = palettes[settings.preset];
-    ctx.fillText(p.glyph, p.x, p.y);
+    ctx.fillText(p.glyph, p.x, row);
   }
 }
 function resize() {

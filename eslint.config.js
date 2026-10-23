@@ -1,6 +1,7 @@
 const globals = Object.fromEntries(
   [
     'window',
+    'CanvasRenderingContext2D',
     'innerWidth',
     'clearTimeout',
     'document',
